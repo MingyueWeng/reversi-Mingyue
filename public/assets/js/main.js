@@ -12,7 +12,7 @@ function getIRIParameterValue(requestedKey){
 }
 
 let username = getIRIParameterValue('username');
-if ((typeof username == 'undefined') || (username === null)){
+if ((typeofusername == 'undefined') || (username === null)){
     username = "Annonymous_"+Math.floor(Math.random()*1000);
 }
 
