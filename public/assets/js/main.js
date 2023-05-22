@@ -11,15 +11,39 @@ function getIRIParameterValue(requestedKey){
     }
 }
 
-let username = getIRIParameterValue('username');
+let username = decodeURI(getIRIParameterValue('username'));
 if ((typeof username == 'undefined') || (username === null)){
     username = "Annonymous_"+Math.floor(Math.random()*1000);
 }
 
 $('#messages').prepend('<b>'+username+':</b>');
 
+let chat_room = 'Lobby';
 
+/* Set up the socket.io connection oto the server */
 let socket = io();
 socket.on('log',function(array){
     console.log.apply(console,array);
+});
+
+socket.on('join_room_response', (payload) => {
+    if((typeof payload == 'undefined') || (payload === null)){
+        console.log('Server did not send a payload');
+        return;
+    }
+    if(payload.result === 'fail'){
+        console.log(payload.message);
+        return;
+    }
+    let newString = '<p class \'join_room_response\'>'+payload.username+' joined the '+payload.room+'. (There are '+payload.count+' user in this room)</p>';
+    $('#messages').prepend(newString);
+})
+
+/* Request to join the char toom */
+$ (()=> {
+    let request = {};
+    request.room = chat_room;
+    request.username = username;
+    console.log('**** Client log message, sending \'join_room\' command: '+ JSON.stringify(request));
+    socket.emit('join_room',request);
 });
