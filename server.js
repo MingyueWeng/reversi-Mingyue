@@ -77,7 +77,7 @@ io.on('connection', (socket) => {
     socket.on('join_room', (payload) => {
         serverLog('Server received a command', '\'join_room\'', JSON.stringify(payload));
         /* Checkt that the data coming from the client is good  */
-        if ((typeof payload == 'undifined') || (payload === null)) {
+        if ((typeof payload == 'undefined') || (payload === null)) {
             response = {};
             response.result = 'fail';
             response.message = 'client did not send a payload';
@@ -88,7 +88,7 @@ io.on('connection', (socket) => {
         let room = payload.room;
         let username = payload.username;
 
-        if ((typeof room == 'undifined') || (room === null)) {
+        if ((typeof room == 'undefined') || (room === null)) {
             response = {};
             response.result = 'fail';
             response.message = 'client did not send a valid room to join';
@@ -97,7 +97,7 @@ io.on('connection', (socket) => {
             return;
         }
 
-        if ((typeof username == 'undifined') || (username === null)) {
+        if ((typeof username == 'undefined') || (username === null)) {
             response = {};
             response.result = 'fail';
             response.message = 'client did not send a valid username to join the chat room';
@@ -160,7 +160,7 @@ io.on('connection', (socket) => {
     socket.on('send_chat_message', (payload) => {
         serverLog('Server received a command', '\'send_chat_message\'', JSON.stringify(payload));
         /* Checkt that the data coming from the client is good  */
-        if ((typeof payload == 'undifined') || (payload === null)) {
+        if ((typeof payload == 'undefined') || (payload === null)) {
             response = {};
             response.result = 'fail';
             response.message = 'client did not send a payload';
@@ -172,7 +172,7 @@ io.on('connection', (socket) => {
         let username = payload.username;
         let message = payload.message;
 
-        if ((typeof room == 'undifined') || (room === null)) {
+        if ((typeof room == 'undefined') || (room === null)) {
             response = {};
             response.result = 'fail';
             response.message = 'client did not send a valid room to message';
@@ -181,7 +181,7 @@ io.on('connection', (socket) => {
             return;
         }
 
-        if ((typeof username == 'undifined') || (username === null)) {
+        if ((typeof username == 'undefined') || (username === null)) {
             response = {};
             response.result = 'fail';
             response.message = 'client did not send a valid username as a message source';
@@ -190,7 +190,7 @@ io.on('connection', (socket) => {
             return;
         }
 
-        if ((typeof message == 'undifined') || (message === null)) {
+        if ((typeof message == 'undefined') || (message === null)) {
             response = {};
             response.result = 'fail';
             response.message = 'client did not send a valid message';
