@@ -16,9 +16,10 @@ if ((typeof username == 'undefined') || (username === null)){
     username = "Annonymous_"+Math.floor(Math.random()*1000);
 }
 
-$('#messages').prepend('<b>'+username+':</b>');
+/* Entry name message (removed) */
+/* $('#messages').prepend('<b>'+username+':</b>'); */
 
-let chat_room = 'Lobby';
+let chatRoom = 'Lobby';
 
 /* Set up the socket.io connection oto the server */
 let socket = io();
@@ -39,11 +40,35 @@ socket.on('join_room_response', (payload) => {
     $('#messages').prepend(newString);
 })
 
+/* Input for the messages */
+function sendChatMessage(){
+    let request = {};
+    request.room = chatRoom;
+    request.username = username;
+    request.message = $('#chatMessage').val();
+    console.log('**** Client log message, sending \'send_chat_message\' command: '+ JSON.stringify(request));
+    socket.emit('send_chat_message',request);
+}
+
+socket.on('send_chat_message_response', (payload) => {
+    if((typeof payload == 'undefined') || (payload === null)){
+        console.log('Server did not send a payload');
+        return;
+    }
+    if(payload.result === 'fail'){
+        console.log(payload.message);
+        return;
+    }
+    let newString = '<p class \'chat_message\'><b>'+payload.username+'</b>: '+payload.message+'</p>';
+    $('#messages').prepend(newString);
+})
+
 /* Request to join the char toom */
 $ (()=> {
     let request = {};
-    request.room = chat_room;
+    request.room = chatRoom;
     request.username = username;
     console.log('**** Client log message, sending \'join_room\' command: '+ JSON.stringify(request));
     socket.emit('join_room',request);
 });
+
