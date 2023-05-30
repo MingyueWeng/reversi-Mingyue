@@ -13,8 +13,8 @@ function getIRIParameterValue(requestedKey){
 }
 
 let username = decodeURI(getIRIParameterValue('username'));
-if ((typeof username == 'undefined') || (username === null) || (username === 'null')){
-    username = "Annonymous_"+Math.floor(Math.random()*1000);
+if ((typeof username == 'undefined') || (username === null) || (username === 'null') || (username === "")){
+    username = "Anonymous_"+Math.floor(Math.random()*1000);
 }
 
 /* Entry name message (removed) */
@@ -32,7 +32,7 @@ socket.on('log',function(array){
 });
 
 function makeInviteButton(){
-    let newHTML = "<button type='button' class='btn btn-outline-primary>Invite</button>";
+    let newHTML = "<button type='button' class='btn btn-outline-primary'>Invite</button>";
     let newNode = $(newHTML);
     return newNode;
 }
@@ -100,7 +100,7 @@ socket.on('join_room_response', (payload) => {
     let newNode = $(newHTML);
     newNode.hide();
     $('#messages').prepend(newNode);
-    newNode.show("fade",500);
+    newNode.show("fade", 500);
 })
 
 socket.on('player_disconnected', (payload) => {
@@ -109,7 +109,7 @@ socket.on('player_disconnected', (payload) => {
         return;
     }
 
-    if(payload.socket_id === socket_id){
+    if(payload.socket_id == socket_id){
         return;
     }
 
@@ -123,7 +123,7 @@ socket.on('player_disconnected', (payload) => {
     let newNode = $(newHTML);
     newNode.hide();
     $('#messages').prepend(newNode);
-    newNode.show("fade",500);
+    newNode.show("fade", 500);
 })
 
 /* Input for the messages */
@@ -154,7 +154,7 @@ socket.on('send_chat_message_response', (payload) => {
 })
 
 /* Request to join the char toom */
-$ (()=> {
+$(()=> {
     let request = {};
     request.room = chatRoom;
     request.username = username;
