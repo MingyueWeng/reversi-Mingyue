@@ -14,7 +14,7 @@ function getIRIParameterValue(requestedKey){
 
 let username = decodeURI(getIRIParameterValue('username'));
 if ((typeof username == 'undefined') || (username === null) || (username === 'null') || (username === "")){
-    username = "Anonymous_"+Math.floor(Math.random()*1000);
+    username = "Anonymous_"+Math.floor(Math.random() * 1000);
 }
 
 /* Entry name message (removed) */
@@ -119,7 +119,7 @@ socket.on('player_disconnected', (payload) => {
     }
 
     let newHTML = '<p class=\'left_room_response\'>'+payload.username+' left the '
-        +payload.room+'. (There are '+payload.count+' user in this room)</p>';
+        +payload.room+'. (There are '+payload.count+' users in this room)</p>';
     let newNode = $(newHTML);
     newNode.hide();
     $('#messages').prepend(newNode);
