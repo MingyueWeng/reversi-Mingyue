@@ -10,7 +10,7 @@ let port = process.env.PORT;
 let directory = __dirname + '/public';
 
 /* If we aren't on Heroku, then we need to adjust our port and directory */
-if ((typeof port == 'undefined') || (port == null)) {
+if ((typeof port == 'undefined') || (port === null)) {
     port = 8080;
     directory = './public';
 }
@@ -49,9 +49,9 @@ io.on('connection', (socket) => {
         });
     }
 
-    serverLog('a page connectetd to the server: ' + socket.id);
+    serverLog('a page connected to the server: ' + socket.id);
 
-    
+
 
     /* join_room command handler */
     /* expected payload:
@@ -117,7 +117,7 @@ io.on('connection', (socket) => {
             if ((typeof sockets == 'undefined') || (sockets === null) || !sockets.includes(socket)) {
                 response = {};
                 response.result = 'fail';
-                response.message = 'Sever internal error joining chat room';
+                response.message = 'Server internal error joining chat room';
                 socket.emit('join_room_response', response);
                 serverLog('join_room command failed', JSON.stringify(response));
 
@@ -129,13 +129,13 @@ io.on('connection', (socket) => {
                     room: room
                 }
                 /* Annouce to everyone that is in the room, who else is in the room  */
-                for (const member of sockets){
+                for (const member of sockets) {
                     response = {
                         result: 'success',
                         socket_id: member.id,
                         room: players[member.id].room,
                         username: players[member.id].username,
-                        count: socket.length
+                        count: sockets.length,
                     }
                     /* Tell everyone that a new user has joined the chat room */
                     io.of('/').to(room).emit('join_room_response', response);
@@ -157,8 +157,8 @@ io.on('connection', (socket) => {
             let room = players[socket.id].room;
             delete players[socket.id];
             /* Tell everyone who left the room */
-            io.of("/").to(room).emit('player_disconnected',payload);
-            serverLog('player_disconnected succeeded ',JSON.stringify(payload));
+            io.of("/").to(room).emit('player_disconnected', payload);
+            serverLog('player_disconnected succeeded ', JSON.stringify(payload));
         }
     });
 
@@ -186,7 +186,7 @@ io.on('connection', (socket) => {
 
     socket.on('send_chat_message', (payload) => {
         serverLog('Server received a command', '\'send_chat_message\'', JSON.stringify(payload));
-        /* Checkt that the data coming from the client is good  */
+        /* Check that the data coming from the client is good */
         if ((typeof payload == 'undefined') || (payload === null)) {
             response = {};
             response.result = 'fail';
@@ -198,7 +198,6 @@ io.on('connection', (socket) => {
         let room = payload.room;
         let username = payload.username;
         let message = payload.message;
-
         if ((typeof room == 'undefined') || (room === null)) {
             response = {};
             response.result = 'fail';
@@ -207,7 +206,6 @@ io.on('connection', (socket) => {
             serverLog('send_chat_message command failed', JSON.stringify(response));
             return;
         }
-
         if ((typeof username == 'undefined') || (username === null)) {
             response = {};
             response.result = 'fail';
@@ -216,7 +214,6 @@ io.on('connection', (socket) => {
             serverLog('send_chat_message command failed', JSON.stringify(response));
             return;
         }
-
         if ((typeof message == 'undefined') || (message === null)) {
             response = {};
             response.result = 'fail';
@@ -226,7 +223,7 @@ io.on('connection', (socket) => {
             return;
         }
 
-        /*  Handle the command */
+        /* Handle the command */
         let response = {};
         response.result = 'success';
         response.username = username;
@@ -237,4 +234,3 @@ io.on('connection', (socket) => {
         serverLog('send_chat_message command succeeded', JSON.stringify(response));
     });
 });
-
