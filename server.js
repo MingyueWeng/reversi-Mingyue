@@ -718,7 +718,7 @@ function calculate_legal_moves(who, board) {
                 ss = adjacent_support(who, 1, 0, row, column, board);
                 se = adjacent_support(who, 1, 1, row, column, board);
                 if (nw || nn || ne || ww || ee || sw || ss || se) {
-                    legal_moves[row][column] == who;
+                    legal_moves[row][column] = who;
                 }
             }
         }
